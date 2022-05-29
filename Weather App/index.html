@@ -13,6 +13,35 @@
     <title>Weather App</title>
   </head>
   <body>
+    <div class="container my-5 mx-auto">
+      <!-- Location Form  -->
+      <h1 class="text-muted text-center my-4">Ninja Weather</h1>
+      <form class="change-location my-4 text-center text-muted">
+        <label for="city">Enter a Location</label>
+        <input type="text" name="city" class="form-control p-4" />
+      </form>
+
+      <!-- Card -->
+      <div class="card shadow-lg rounded d-none">
+        <img
+          src="https://via.placeholder.com/400x300"
+          alt="placeholder"
+          class="time card-img-top"
+        />
+        <div class="icon bg-light mx-auto text-center">
+          <!-- Icon -->
+        </div>
+        <div class="details text-muted text-uppercase text-center">
+          <h5 class="my-3">City Name</h5>
+          <div class="my-3">Weather Condition</div>
+          <div class="display-4 my-4">
+            <span>20</span>
+            <span>&deg;C</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script src="scripts/forecast.js"></script>
     <script src="scripts/app.js"></script>
   </body>
