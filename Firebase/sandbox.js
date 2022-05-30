@@ -1,5 +1,6 @@
 const list = document.querySelector("ul");
 const form = document.querySelector("form");
+const unsubBtn = document.querySelector("button");
 
 const addRecipe = (recipe, id) => {
   let html = `
@@ -14,16 +15,29 @@ const addRecipe = (recipe, id) => {
   list.innerHTML += html;
 };
 
+const deleteRecipe = (id) => {
+  const recipes = document.querySelectorAll("li");
+  recipes.forEach((recipe) => {
+    if (recipe.getAttribute("data-id") === id) {
+      recipe.remove();
+    }
+  });
+};
+
 // get documents
-const collection = db
-  .collection("recipes")
-  .get()
-  .then((snapshot) => {
-    snapshot.docs.forEach((doc) => {
+// ->
+// set up REALTIME listener.
+const unsub = db.collection("recipes").onSnapshot((snapshot) => {
+  // everytime a firestore changes, it takes a snapshot.
+  snapshot.docChanges().forEach((change) => {
+    const doc = change.doc;
+    if (change.type === "added") {
       addRecipe(doc.data(), doc.id);
-    });
-  })
-  .catch((err) => console.log(err));
+    } else if (change.type === "removed") {
+      deleteRecipe(doc.id);
+    }
+  });
+});
 
 // add documents
 form.addEventListener("submit", (e) => {
@@ -56,4 +70,10 @@ list.addEventListener("click", (e) => {
         console.log("recipe deleted!");
       });
   }
+});
+
+// unsubscribe from db changes
+unsubBtn.addEventListener("click", () => {
+  unsub();
+  console.log("unsubscribed!");
 });
