@@ -7,16 +7,7 @@ const temperature = document.querySelector(
 );
 const img = document.querySelector("img.time");
 
-const updateCity = async (city) => {
-  // call forecast methods.
-  const cityDets = await getCity(city);
-  const weather = await getWeather(cityDets.Key);
-
-  return {
-    cityDets,
-    weather,
-  };
-};
+const forecast = new Forecast();
 
 const updateUI = (data) => {
   const { cityDets, weather } = data;
@@ -39,7 +30,8 @@ cityForm.addEventListener("submit", (e) => {
   const city = cityForm.city.value.trim();
   cityForm.reset();
 
-  updateCity(city)
+  forecast
+    .updateCity(city)
     .then((data) => updateUI(data))
     .catch((err) => console.log(err));
 
@@ -50,7 +42,8 @@ cityForm.addEventListener("submit", (e) => {
 // check if local storage data exists;
 if (localStorage.getItem("city")) {
   // fire event with the city value.
-  updateCity(localStorage.getItem("city"))
+  forecast
+    .updateCity(localStorage.getItem("city"))
     .then((data) => updateUI(data))
     .catch((err) => console.log(err));
 }
